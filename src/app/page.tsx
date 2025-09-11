@@ -476,7 +476,7 @@ export default function DocumentUploader() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button onClick={handleBrowse} disabled={true}>
+              <Button onClick={handleBrowse}>
                 <File className="mr-2" />
                 Browse Files
               </Button>
@@ -759,7 +759,7 @@ export default function DocumentUploader() {
                 Transform complex legal documents into clear, actionable insights. Our AI extracts key facts, identifies risks, and highlights what you need to do next.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <Button size="lg" onClick={() => setShowUploader(true)} disabled={true}>
+                <Button size="lg" onClick={() => setShowUploader(true)}>
                   <UploadCloud className="mr-2"/>
                   Upload Documents
                 </Button>
