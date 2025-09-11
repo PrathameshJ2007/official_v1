@@ -480,7 +480,7 @@ export default function DocumentUploader() {
                 <File className="mr-2" />
                 Browse Files
               </Button>
-              <Button variant="secondary" onClick={() => setIsCameraOpen(true)} disabled={true}>
+              <Button variant="secondary" onClick={() => setIsCameraOpen(true)}>
                 <Camera className="mr-2" />
                 Take Photo
               </Button>
