@@ -177,18 +177,17 @@ function CameraComponent({
     let stream: MediaStream | null = null;
     const getCameraPermission = async () => {
       if (!open) {
-        // Stop any existing stream if the dialog is closed
         if (videoRef.current?.srcObject) {
             (videoRef.current.srcObject as MediaStream).getTracks().forEach((track) => track.stop());
             videoRef.current.srcObject = null;
         }
         return;
       }
-      const videoConstraints: MediaStreamConstraints['video'] = {
-        facingMode: 'environment' 
-      };
-
+      
       try {
+        const videoConstraints: MediaStreamConstraints['video'] = {
+          facingMode: 'environment' 
+        };
         stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
       } catch (err) {
         console.warn('Could not get environment camera, trying default', err);
@@ -213,7 +212,9 @@ function CameraComponent({
       }
     };
 
-    getCameraPermission();
+    if (open) {
+      getCameraPermission();
+    }
 
     return () => {
       if (stream) {
@@ -475,11 +476,11 @@ export default function DocumentUploader() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button onClick={handleBrowse} disabled={loading}>
+              <Button onClick={handleBrowse} disabled={true}>
                 <File className="mr-2" />
                 Browse Files
               </Button>
-              <Button variant="secondary" onClick={() => setIsCameraOpen(true)} disabled={loading}>
+              <Button variant="secondary" onClick={() => setIsCameraOpen(true)} disabled={true}>
                 <Camera className="mr-2" />
                 Take Photo
               </Button>
@@ -758,7 +759,7 @@ export default function DocumentUploader() {
                 Transform complex legal documents into clear, actionable insights. Our AI extracts key facts, identifies risks, and highlights what you need to do next.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <Button size="lg" onClick={() => setShowUploader(true)}>
+                <Button size="lg" onClick={() => setShowUploader(true)} disabled={true}>
                   <UploadCloud className="mr-2"/>
                   Upload Documents
                 </Button>
