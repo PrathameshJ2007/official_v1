@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
 export function ThemeToggle() {
-  const [theme, setThemeState] = React.useState<'light' | 'dark'>('dark');
+  const [theme, setThemeState] = React.useState<'light' | 'dark' | null>(null);
   const { toast } = useToast();
 
   React.useEffect(() => {
@@ -17,12 +17,14 @@ export function ThemeToggle() {
   }, []);
 
   React.useEffect(() => {
+    if (theme === null) return;
     // Whenever the theme state changes, update the class on the <html> element
     const isDark = theme === 'dark';
     document.documentElement.classList.toggle('dark', isDark);
   }, [theme]);
 
   const toggleTheme = () => {
+    if (theme === null) return;
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setThemeState(newTheme);
     toast({
@@ -30,6 +32,11 @@ export function ThemeToggle() {
         duration: 2000,
     });
   };
+
+  if (theme === null) {
+    // Render a placeholder or nothing on the server and during initial client render
+    return <div className="h-10 w-10" />;
+  }
 
   return (
     <Button variant="outline" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
