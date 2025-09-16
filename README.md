@@ -2,18 +2,92 @@
 
 This is a Next.js application that uses AI to analyze documents and extract key information.
 
-## Prerequisites
+## Project Deep Dive & Pitch Overview
+
+This document provides a strategic and technical overview of the Titan Neural Network platform, suitable for a pitch, hackathon, or technical presentation.
+
+### 1. High-Level Architecture
+
+Our application is built on a modern, serverless-first stack designed for scalability, performance, and low operational overhead.
+
+-   **Frontend (Next.js & React):** A dynamic, server-rendered user interface for a fast and responsive experience. We used **shadcn/ui** for our component library to build a polished, production-ready UI efficiently.
+-   **AI Backend (Genkit):** A powerful, serverless AI backend using Google's Genkit framework. It orchestrates calls to Google's Gemini large language models for all document processing.
+-   **Hosting (Vercel/Netlify/Railway):** A scalable, serverless hosting platform that allows for continuous deployment directly from our Git repository, minimizing infrastructure management.
+
+### 2. Key Features
+
+Titan is more than just an OCR tool; it's a comprehensive document intelligence platform.
+
+-   **Multi-Modal Document Ingestion:** Users can upload PDFs and various image formats. Crucially, our integrated camera feature allows users to instantly digitize physical documents, crop them for clarity, and submit them for analysis on the go.
+-   **AI-Powered Analysis:** We leverage a multimodal LLM to understand both text and layout. The AI generates a plain-English summary, extracts critical facts (like parties, dates, and amounts), identifies potential risks and fees, and creates a list of actionable to-do items with deadlines.
+-   **Reliable, Structured Output:** Every analysis returns a predictable JSON object with citations for each extracted fact. This reliability is enforced by a Zod schema, making the data easy to integrate and display consistently.
+-   **Adaptive & Responsive UI:** The interface provides a seamless experience across devices, using tabs on desktop and an accordion on mobile to present complex information clearly.
+
+### 3. Competitive Differentiation
+
+Our solution stands out from existing document management tools in several key ways:
+
+-   **From Data Extraction to Actionable Intelligence:** While most tools stop at OCR (extracting raw text), we provide a second layer of AI analysis that interprets the text, contextualizes it, and tells the user what it means for them and what they need to do next.
+-   **Integrated, End-to-End Workflow:** We offer a single, seamless experience from document capture to analysis and action items. There's no need to use a separate scanning app, then upload to a separate analysis tool. It all happens in one place.
+-   **Cost-Effective & Serverless:** By using a serverless architecture (Genkit, Vercel/Netlify/Railway), we avoid the high fixed costs of maintaining dedicated servers. Our operational costs scale directly with usage, making the solution highly economical.
+
+### 4. Scalability & Implementation Cost
+
+The architecture was deliberately chosen to maximize scalability while minimizing cost.
+
+-   **Scalability:** Every component of our stack is serverless and managed by best-in-class providers. The **Next.js frontend** scales automatically with traffic via the hosting platform, and **Genkit AI flows** are serverless functions that can handle a massive number of concurrent requests. This means we can go from one user to one million users with zero infrastructure changes.
+-   **Implementation Cost:** The initial development cost is significantly reduced by leveraging open-source tools like Next.js, React, and Genkit. The primary ongoing cost is API usage for the AI model, which is a variable cost directly tied to user activity. There are no fixed server costs, making it an incredibly lean and efficient business model.
+
+### 5. Detailed File Structure
+
+```
+.
+├── src
+│   ├── app
+│   │   ├── history/page.tsx   # React component for the document history page.
+│   │   ├── layout.tsx         # Root layout for the entire application.
+│   │   ├── page.tsx           # Main entry point and UI for document upload/analysis.
+│   │   └── globals.css        # Global styles and Tailwind CSS theme variables.
+│   │
+│   ├── ai
+│   │   ├── flows/document-processor.ts  # The core AI logic. Defines the Genkit flow, prompt, and Zod schemas for structured output.
+│   │   └── genkit.ts                      # Configuration file for initializing Genkit and the Google AI plugin.
+│   │
+│   ├── components
+│   │   ├── ui/                  # Reusable UI components from shadcn/ui (Button, Card, etc.).
+│   │   ├── documentation-dialog.tsx # React component for the in-app documentation modal.
+│   │   └── theme-toggle.tsx       # Component for switching between light and dark modes.
+│   │
+│   ├── hooks
+│   │   ├── use-toast.ts         # Custom hook for managing toast notifications.
+│   │   └── use-mobile.tsx       # Custom hook to detect if the user is on a mobile device.
+│   │
+│   └── lib
+│       ├── utils.ts             # Utility functions, including `cn` for merging Tailwind classes.
+│       ├── crop-image.ts        # Client-side logic for cropping images from the camera component.
+│       └── firebase.ts          # Firebase configuration and initialization (if used).
+│
+├── public/                    # Static assets (images, fonts, etc.).
+├── package.json               # Project dependencies and scripts.
+├── next.config.ts             # Configuration for the Next.js framework.
+├── tailwind.config.ts         # Configuration for the Tailwind CSS utility-first framework.
+└── README.md                  # This file.
+```
+
+---
+
+## Running Locally in Visual Studio Code
+
+Follow these steps to get the project running on your local machine.
+
+### 1. Prerequisites
 
 Before you begin, ensure you have the following installed:
 - [Node.js](https://nodejs.org/en/) (v18 or later recommended)
 - [npm](https://www.npmjs.com/) (comes with Node.js)
 - [Git](https://git-scm.com/)
 
-## Running Locally in Visual Studio Code
-
-Follow these steps to get the project running on your local machine.
-
-### 1. Clone the Repository
+### 2. Clone the Repository
 
 First, clone the project repository to your local machine.
 
@@ -22,7 +96,7 @@ git clone <your-repository-url>
 cd <your-project-directory>
 ```
 
-### 2. Install Dependencies
+### 3. Install Dependencies
 
 Open the project in Visual Studio Code and install the necessary npm packages.
 
@@ -30,7 +104,7 @@ Open the project in Visual Studio Code and install the necessary npm packages.
 npm install
 ```
 
-### 3. Set Up Environment Variables
+### 4. Set Up Environment Variables
 
 The application requires an API key for the Google AI (Gemini) service to function.
 
@@ -43,7 +117,7 @@ The application requires an API key for the Google AI (Gemini) service to functi
 
     You can get a Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 
-### 4. Run the Development Servers
+### 5. Run the Development Servers
 
 This project requires two separate processes to be running simultaneously:
 - The Next.js frontend application.
@@ -67,7 +141,7 @@ The recommended way to manage this in VS Code is by using the built-in terminal 
     npm run dev
     ```
 
-### 5. Access the Application
+### 6. Access the Application
 
 Once both servers are running, you can access the application in your web browser at:
 
