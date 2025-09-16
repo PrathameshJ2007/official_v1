@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -6,8 +7,10 @@ import {
   MoreVertical,
   Search,
   UploadCloud,
-  Menu
+  Menu,
+  BookOpen,
 } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -23,6 +26,7 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { DocumentationDialog } from '@/components/documentation-dialog';
 
 function Logo() {
   return (
@@ -53,6 +57,8 @@ function Logo() {
 const historyData: any[] = [];
 
 export default function HistoryPage() {
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
       <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 md:px-6">
@@ -76,6 +82,10 @@ export default function HistoryPage() {
           <Button variant="link" className="text-foreground">
             <History className="mr-2 h-4 w-4" />
             History
+          </Button>
+           <Button variant="link" className="text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
+              <BookOpen className="mr-2 h-4 w-4" />
+              Documentation
           </Button>
         </nav>
         <Sheet>
@@ -104,6 +114,9 @@ export default function HistoryPage() {
               <Link href="/history" className="text-foreground">
                 History
               </Link>
+              <button className="flex items-center text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
+                Documentation
+              </button>
             </nav>
           </SheetContent>
         </Sheet>
@@ -191,6 +204,9 @@ export default function HistoryPage() {
           </CardContent>
         </Card>
       </main>
+      <DocumentationDialog open={isDocsOpen} onOpenChange={setIsDocsOpen} />
     </div>
   );
 }
+
+    

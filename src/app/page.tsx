@@ -29,6 +29,7 @@ import {
   Crop,
   Check,
   Menu,
+  BookOpen,
 } from 'lucide-react';
 import Cropper from 'react-easy-crop';
 import type { Point, Area } from 'react-easy-crop';
@@ -48,6 +49,7 @@ import { Slider } from '@/components/ui/slider';
 import getCroppedImg from '@/lib/crop-image';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { DocumentationDialog } from '@/components/documentation-dialog';
 
 
 function Logo() {
@@ -350,6 +352,7 @@ export default function DocumentUploader() {
   const [processingSteps, setProcessingSteps] = useState<ProcessingStep[]>(initialProcessingSteps);
   const [jobId, setJobId] = useState<string | null>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
 
   const startAnalysis = async (dataUri: string, name: string) => {
     setFileName(name);
@@ -705,6 +708,10 @@ export default function DocumentUploader() {
               History
             </Link>
           </Button>
+          <Button variant="link" className="text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
+              <BookOpen className="mr-2 h-4 w-4" />
+              Documentation
+          </Button>
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -732,6 +739,9 @@ export default function DocumentUploader() {
               <Link href="/history" className="text-muted-foreground">
                 History
               </Link>
+              <button className="flex items-center text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
+                Documentation
+              </button>
             </nav>
           </SheetContent>
         </Sheet>
@@ -792,6 +802,9 @@ export default function DocumentUploader() {
         </div>
       </main>
       <CameraComponent open={isCameraOpen} onClose={() => setIsCameraOpen(false)} onPhotoTaken={handlePhotoTaken} />
+      <DocumentationDialog open={isDocsOpen} onOpenChange={setIsDocsOpen} />
     </div>
   );
 }
+
+    
