@@ -44,7 +44,63 @@ export function DocumentationDialog({ open, onOpenChange }: DocumentationDialogP
                     </ul>
                 </DocSection>
 
-                <DocSection title="2. Key Features">
+                <DocSection title="2. Application Workflow (Visualized)">
+                  <p>Here’s a step-by-step visual representation of how a document is processed:</p>
+                  <pre className="bg-muted p-4 rounded-md text-xs"><code>{`[User's Device: Browser]
+       |
+       1. User uploads a file (PDF/Image) or takes a photo.
+       |
+       V
+[Next.js Frontend: /src/app/page.tsx]
+       |
+       2. File is converted into a Base64 Data URI.
+       |  (e.g., 'data:image/jpeg;base64,iVBORw0KGgo...')
+       |
+       V
+[Serverless Function Call]
+       |
+       3. Frontend calls \`processDocument({ documentDataUri: "..." })\`
+       |  This is a network request to our AI backend.
+       |
+       V
+[Genkit AI Backend: /src/ai/flows/document-processor.ts]
+       |
+       4. The Genkit flow receives the request.
+       |
+       5. It invokes the Google Gemini LLM with two key things:
+       |  - The document: \`{{media url=documentDataUri}}\`
+       |  - The prompt asking it to act as an expert and return structured data.
+       |
+       6. The LLM's raw output is validated against our \`ProcessDocumentOutputSchema\` (Zod).
+       |  This ensures the output is always in the correct JSON format.
+       |
+       V
+[Serverless Function Response]
+       |
+       7. A structured JSON object is returned to the frontend.
+       |
+       |  {
+       |    "summary": "This is a contract between...",
+       |    "keyFacts": [{ "fact": "...", "citation": "..." }],
+       |    "risksAndFees": [{ "description": "...", "citation": "..." }],
+       |    ...
+       |  }
+       |
+       V
+[Next.js Frontend: /src/app/page.tsx]
+       |
+       8. The React component's \`result\` state is updated with the JSON data.
+       |
+       9. The UI re-renders to display the analysis in tabs/accordion.
+       |
+       V
+[User's Device: Browser]
+       |
+       10. User sees the complete document analysis.
+       |`}</code></pre>
+                </DocSection>
+
+                <DocSection title="3. Key Features">
                     <p>Titan is more than just an OCR tool; it's a comprehensive document intelligence platform.</p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li><strong>Multi-Modal Document Ingestion:</strong> Users can upload PDFs and various image formats. Crucially, our integrated camera feature allows users to instantly digitize physical documents, crop them for clarity, and submit them for analysis on the go.</li>
@@ -54,7 +110,7 @@ export function DocumentationDialog({ open, onOpenChange }: DocumentationDialogP
                     </ul>
                 </DocSection>
 
-                <DocSection title="3. Competitive Differentiation">
+                <DocSection title="4. Competitive Differentiation">
                     <p>Our solution stands out from existing document management tools in several key ways:</p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li><strong>From Data Extraction to Actionable Intelligence:</strong> While most tools stop at OCR (extracting raw text), we provide a second layer of AI analysis that interprets the text, contextualizes it, and tells the user what it means for them and what they need to do next.</li>
@@ -63,7 +119,7 @@ export function DocumentationDialog({ open, onOpenChange }: DocumentationDialogP
                     </ul>
                 </DocSection>
 
-                <DocSection title="4. Scalability & Implementation Cost">
+                <DocSection title="5. Scalability & Implementation Cost">
                     <p>The architecture was deliberately chosen to maximize scalability while minimizing cost.</p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li><strong>Scalability:</strong> Every component of our stack is serverless and managed by best-in-class providers.
@@ -77,7 +133,7 @@ export function DocumentationDialog({ open, onOpenChange }: DocumentationDialogP
                     </ul>
                 </DocSection>
 
-                 <DocSection title="5. The AI Backend: Structured Intelligence (src/ai/flows/document-processor.ts)">
+                 <DocSection title="6. The AI Backend: Structured Intelligence (src/ai/flows/document-processor.ts)">
                      <p>The core intelligence of our platform lies in our AI flow, built with <strong>Genkit</strong>. Reliability is our most critical concern, which we enforce using the <strong>Zod</strong> schema validation library.</p>
                      <ul className="list-disc pl-5 space-y-1">
                         <li><strong>Structured I/O with Zod:</strong> We define a strict data contract. <code>ProcessDocumentInputSchema</code> ensures the AI receives a data URI, and <code>ProcessDocumentOutputSchema</code> commands the AI to return a precise JSON structure, including <code>documentType</code>, <code>summary</code>, and arrays for <code>keyFacts</code>, <code>risksAndFees</code>, and <code>toDoItems</code>, each with a citation. This structured output eliminates variability and makes the AI's response predictable.</li>
