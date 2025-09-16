@@ -67,6 +67,9 @@ const processDocumentFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await prompt(input);
-    return output!;
+    if (!output) {
+      throw new Error("AI model failed to generate a valid analysis. The document may be unreadable or empty.");
+    }
+    return output;
   }
 );
