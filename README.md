@@ -14,7 +14,66 @@ Our application is built on a modern, serverless-first stack designed for scalab
 -   **AI Backend (Genkit):** A powerful, serverless AI backend using Google's Genkit framework. It orchestrates calls to Google's Gemini large language models for all document processing.
 -   **Hosting (Vercel/Netlify/Railway):** A scalable, serverless hosting platform that allows for continuous deployment directly from our Git repository, minimizing infrastructure management.
 
-### 2. Key Features
+### 2. Application Workflow (Visualized)
+
+Here’s a step-by-step visual representation of how a document is processed:
+
+```
+[User's Device: Browser]
+       |
+       1. User uploads a file (PDF/Image) or takes a photo.
+       |
+       V
+[Next.js Frontend: /src/app/page.tsx]
+       |
+       2. File is converted into a Base64 Data URI.
+       |  (e.g., 'data:image/jpeg;base64,iVBORw0KGgo...')
+       |
+       V
+[Serverless Function Call]
+       |
+       3. Frontend calls `processDocument({ documentDataUri: "..." })`
+       |  This is a network request to our AI backend.
+       |
+       V
+[Genkit AI Backend: /src/ai/flows/document-processor.ts]
+       |
+       4. The Genkit flow receives the request.
+       |
+       5. It invokes the Google Gemini LLM with two key things:
+       |  - The document: `{{media url=documentDataUri}}`
+       |  - The prompt asking it to act as an expert and return structured data.
+       |
+       6. The LLM's raw output is validated against our `ProcessDocumentOutputSchema` (Zod).
+       |  This ensures the output is always in the correct JSON format.
+       |
+       V
+[Serverless Function Response]
+       |
+       7. A structured JSON object is returned to the frontend.
+       |
+       |  {
+       |    "summary": "This is a contract between...",
+       |    "keyFacts": [{ "fact": "...", "citation": "..." }],
+       |    "risksAndFees": [{ "description": "...", "citation": "..." }],
+       |    ...
+       |  }
+       |
+       V
+[Next.js Frontend: /src/app/page.tsx]
+       |
+       8. The React component's `result` state is updated with the JSON data.
+       |
+       9. The UI re-renders to display the analysis in tabs/accordion.
+       |
+       V
+[User's Device: Browser]
+       |
+       10. User sees the complete document analysis.
+       |
+```
+
+### 3. Key Features
 
 Titan is more than just an OCR tool; it's a comprehensive document intelligence platform.
 
@@ -23,7 +82,7 @@ Titan is more than just an OCR tool; it's a comprehensive document intelligence 
 -   **Reliable, Structured Output:** Every analysis returns a predictable JSON object with citations for each extracted fact. This reliability is enforced by a Zod schema, making the data easy to integrate and display consistently.
 -   **Adaptive & Responsive UI:** The interface provides a seamless experience across devices, using tabs on desktop and an accordion on mobile to present complex information clearly.
 
-### 3. Competitive Differentiation
+### 4. Competitive Differentiation
 
 Our solution stands out from existing document management tools in several key ways:
 
@@ -31,14 +90,14 @@ Our solution stands out from existing document management tools in several key w
 -   **Integrated, End-to-End Workflow:** We offer a single, seamless experience from document capture to analysis and action items. There's no need to use a separate scanning app, then upload to a separate analysis tool. It all happens in one place.
 -   **Cost-Effective & Serverless:** By using a serverless architecture (Genkit, Vercel/Netlify/Railway), we avoid the high fixed costs of maintaining dedicated servers. Our operational costs scale directly with usage, making the solution highly economical.
 
-### 4. Scalability & Implementation Cost
+### 5. Scalability & Implementation Cost
 
 The architecture was deliberately chosen to maximize scalability while minimizing cost.
 
 -   **Scalability:** Every component of our stack is serverless and managed by best-in-class providers. The **Next.js frontend** scales automatically with traffic via the hosting platform, and **Genkit AI flows** are serverless functions that can handle a massive number of concurrent requests. This means we can go from one user to one million users with zero infrastructure changes.
 -   **Implementation Cost:** The initial development cost is significantly reduced by leveraging open-source tools like Next.js, React, and Genkit. The primary ongoing cost is API usage for the AI model, which is a variable cost directly tied to user activity. There are no fixed server costs, making it an incredibly lean and efficient business model.
 
-### 5. Detailed File Structure
+### 6. Detailed File Structure
 
 ```
 .
