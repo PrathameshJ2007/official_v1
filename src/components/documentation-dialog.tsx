@@ -9,6 +9,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Smartphone, Upload, Code, Server, BrainCircuit, Sparkles, CheckCheck, FileJson, RefreshCw, LayoutTemplate, Eye, ArrowDown } from 'lucide-react';
 
 interface DocumentationDialogProps {
   open: boolean;
@@ -16,9 +17,24 @@ interface DocumentationDialogProps {
 }
 
 const DocSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
-    <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2 text-primary">{title}</h3>
+    <div className="mb-8">
+        <h3 className="text-xl font-semibold mb-3 text-primary">{title}</h3>
         <div className="text-muted-foreground space-y-2">{children}</div>
+    </div>
+);
+
+const WorkflowStep = ({ icon, title, description, isLast = false }: { icon: React.ReactNode, title: string, description: string, isLast?: boolean }) => (
+    <div className="flex items-start">
+        <div className="flex flex-col items-center mr-4">
+            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                {icon}
+            </div>
+            {!isLast && <div className="w-px h-16 bg-border mt-2"></div>}
+        </div>
+        <div className="pt-2">
+            <h4 className="font-semibold text-foreground">{title}</h4>
+            <p className="text-sm">{description}</p>
+        </div>
     </div>
 );
 
@@ -44,60 +60,51 @@ export function DocumentationDialog({ open, onOpenChange }: DocumentationDialogP
                     </ul>
                 </DocSection>
 
-                <DocSection title="2. Application Workflow (Visualized)">
-                  <p>Here’s a step-by-step visual representation of how a document is processed:</p>
-                  <pre className="bg-muted p-4 rounded-md text-xs"><code>{`[User's Device: Browser]
-       |
-       1. User uploads a file (PDF/Image) or takes a photo.
-       |
-       V
-[Next.js Frontend: /src/app/page.tsx]
-       |
-       2. File is converted into a Base64 Data URI.
-       |  (e.g., 'data:image/jpeg;base64,iVBORw0KGgo...')
-       |
-       V
-[Serverless Function Call]
-       |
-       3. Frontend calls \`processDocument({ documentDataUri: "..." })\`
-       |  This is a network request to our AI backend.
-       |
-       V
-[Genkit AI Backend: /src/ai/flows/document-processor.ts]
-       |
-       4. The Genkit flow receives the request.
-       |
-       5. It invokes the Google Gemini LLM with two key things:
-       |  - The document: \`{{media url=documentDataUri}}\`
-       |  - The prompt asking it to act as an expert and return structured data.
-       |
-       6. The LLM's raw output is validated against our \`ProcessDocumentOutputSchema\` (Zod).
-       |  This ensures the output is always in the correct JSON format.
-       |
-       V
-[Serverless Function Response]
-       |
-       7. A structured JSON object is returned to the frontend.
-       |
-       |  {
-       |    "summary": "This is a contract between...",
-       |    "keyFacts": [{ "fact": "...", "citation": "..." }],
-       |    "risksAndFees": [{ "description": "...", "citation": "..." }],
-       |    ...
-       |  }
-       |
-       V
-[Next.js Frontend: /src/app/page.tsx]
-       |
-       8. The React component's \`result\` state is updated with the JSON data.
-       |
-       9. The UI re-renders to display the analysis in tabs/accordion.
-       |
-       V
-[User's Device: Browser]
-       |
-       10. User sees the complete document analysis.
-       |`}</code></pre>
+                <DocSection title="2. Application Workflow">
+                    <p className='mb-4'>Here’s a step-by-step visual representation of how a document is processed:</p>
+                    <div className="space-y-0">
+                        <WorkflowStep 
+                            icon={<Upload className="w-6 h-6" />}
+                            title="1. Document Ingestion"
+                            description="User uploads a file (PDF/Image) or takes a photo on their device."
+                        />
+                         <WorkflowStep 
+                            icon={<Code className="w-6 h-6" />}
+                            title="2. Frontend Processing"
+                            description="The Next.js frontend converts the file into a Base64 Data URI to prepare it for transmission."
+                        />
+                         <WorkflowStep 
+                            icon={<Server className="w-6 h-6" />}
+                            title="3. Serverless Function Call"
+                            description="The frontend calls the `processDocument` server action, sending the Data URI to the AI backend."
+                        />
+                         <WorkflowStep 
+                            icon={<BrainCircuit className="w-6 h-6" />}
+                            title="4. Genkit AI Backend"
+                            description="The Genkit flow receives the request and invokes the Google Gemini LLM, passing the document media and prompt."
+                        />
+                        <WorkflowStep 
+                            icon={<CheckCheck className="w-6 h-6" />}
+                            title="5. Structured Output Validation"
+                            description="The LLM's output is strictly validated against a Zod schema (`ProcessDocumentOutputSchema`) to ensure a reliable JSON format."
+                        />
+                        <WorkflowStep 
+                            icon={<FileJson className="w-6 h-6" />}
+                            title="6. Serverless Response"
+                            description="A structured JSON object containing the summary, key facts, risks, and to-do items is returned to the frontend."
+                        />
+                         <WorkflowStep 
+                            icon={<RefreshCw className="w-6 h-6" />}
+                            title="7. UI State Update"
+                            description="The React component's state is updated with the analysis results, triggering a re-render."
+                        />
+                        <WorkflowStep 
+                            icon={<LayoutTemplate className="w-6 h-6" />}
+                            title="8. Dynamic Rendering"
+                            description="The UI displays the analysis in an easy-to-navigate format (tabs on desktop, accordion on mobile)."
+                            isLast={true}
+                        />
+                    </div>
                 </DocSection>
 
                 <DocSection title="3. Key Features">
@@ -123,7 +130,7 @@ export function DocumentationDialog({ open, onOpenChange }: DocumentationDialogP
                     <p>The architecture was deliberately chosen to maximize scalability while minimizing cost.</p>
                     <ul className="list-disc pl-5 space-y-1">
                         <li><strong>Scalability:</strong> Every component of our stack is serverless and managed by best-in-class providers.
-                            <ul>
+                            <ul className='list-[circle] pl-5'>
                                 <li>The <strong>Next.js frontend</strong> scales automatically with traffic via the hosting platform.</li>
                                 <li><strong>Genkit AI flows</strong> are serverless functions that can handle a massive number of concurrent requests without any manual intervention.</li>
                             </ul>
