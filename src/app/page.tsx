@@ -8,7 +8,6 @@ import {
   File,
   Camera,
   Loader2,
-  History,
   FileText,
   ShieldCheck,
   CheckCircle2,
@@ -700,12 +699,6 @@ export default function DocumentUploader() {
           <Button variant="link" className="text-foreground" asChild>
             <Link href="/">Home</Link>
           </Button>
-          <Button variant="link" className="text-muted-foreground" asChild>
-            <Link href="/history">
-              <History className="mr-2 h-4 w-4" />
-              History
-            </Link>
-          </Button>
           <Button variant="link" className="text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
               <BookOpen className="mr-2 h-4 w-4" />
               Documentation
@@ -733,9 +726,6 @@ export default function DocumentUploader() {
               </Link>
               <Link href="/" className="text-foreground">
                 Home
-              </Link>
-              <Link href="/history" className="text-muted-foreground">
-                History
               </Link>
               <button className="flex items-center text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
                 Documentation
@@ -770,12 +760,6 @@ export default function DocumentUploader() {
                 <Button size="lg" onClick={() => setShowUploader(true)}>
                   <UploadCloud className="mr-2"/>
                   Upload Documents
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                   <Link href="/history">
-                    <History className="mr-2"/>
-                    View History
-                   </Link>
                 </Button>
               </div>
               <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
