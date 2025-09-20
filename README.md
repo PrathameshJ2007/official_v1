@@ -1,27 +1,27 @@
-# Titan Neural Network - Document Intelligence Platform
+# Titan Neural Network - Financial Document Analysis Platform
 
-This is a Next.js application that uses AI to analyze documents and extract key information.
+This is a Next.js application that uses AI to analyze financial documents like invoices, receipts, and expense reports, and extracts key information to streamline accounting and payment workflows.
 
 ## Project Deep Dive & Pitch Overview
 
-This document provides a strategic and technical overview of the Titan Neural Network platform, suitable for a pitch, hackathon, or technical presentation.
+This document provides a strategic and technical overview of the Titan Neural Network platform, framed for a presentation focused on financial technology (FinTech).
 
 ### 1. High-Level Architecture
 
 Our application is built on a modern, serverless-first stack designed for scalability, performance, and low operational overhead.
 
 -   **Frontend (Next.js & React):** A dynamic, server-rendered user interface for a fast and responsive experience. We used **shadcn/ui** for our component library to build a polished, production-ready UI efficiently.
--   **AI Backend (Genkit):** A powerful, serverless AI backend using Google's Genkit framework. It orchestrates calls to Google's Gemini large language models for all document processing.
+-   **AI Backend (Genkit):** A powerful, serverless AI backend using Google's Genkit framework. It orchestrates calls to Google's Gemini large language models for all financial document processing.
 -   **Hosting (Vercel/Netlify/Railway):** A scalable, serverless hosting platform that allows for continuous deployment directly from our Git repository, minimizing infrastructure management.
 
-### 2. Application Workflow (Visualized)
+### 2. Application Workflow (Finance Example)
 
-Here’s a step-by-step visual representation of how a document is processed:
+Here’s a step-by-step visual representation of how a financial document (e.g., an invoice) is processed:
 
 ```
-[User's Device: Browser]
+[Finance User's Device: Browser]
        |
-       1. User uploads a file (PDF/Image) or takes a photo.
+       1. User uploads a vendor invoice (PDF/Image) or snaps a photo of a receipt.
        |
        V
 [Next.js Frontend: /src/app/page.tsx]
@@ -40,12 +40,12 @@ Here’s a step-by-step visual representation of how a document is processed:
        |
        4. The Genkit flow receives the request.
        |
-       5. It invokes the Google Gemini LLM with two key things:
+       5. It invokes the Google Gemini LLM, instructing it to act as a financial analyst.
        |  - The document: `{{media url=documentDataUri}}`
-       |  - The prompt asking it to act as an expert and return structured data.
+       |  - The prompt asks it to return structured financial data.
        |
        6. The LLM's raw output is validated against our `ProcessDocumentOutputSchema` (Zod).
-       |  This ensures the output is always in the correct JSON format.
+       |  This ensures the output always contains fields like `invoiceNumber`, `totalAmount`, etc.
        |
        V
 [Serverless Function Response]
@@ -53,9 +53,15 @@ Here’s a step-by-step visual representation of how a document is processed:
        7. A structured JSON object is returned to the frontend.
        |
        |  {
-       |    "summary": "This is a contract between...",
-       |    "keyFacts": [{ "fact": "...", "citation": "..." }],
-       |    "risksAndFees": [{ "description": "...", "citation": "..." }],
+       |    "documentType": "Invoice",
+       |    "summary": "Invoice #123 from ACME Inc. for services.",
+       |    "keyFacts": [
+       |      { "fact": "Total Amount: $1,500.00", "citation": "Line 25" },
+       |      { "fact": "Vendor: ACME Inc.", "citation": "Page 1, Header" }
+       |    ],
+       |    "toDoItems": [
+       |      { "item": "Pay by 2024-10-25", "citation": "Line 28" }
+       |    ],
        |    ...
        |  }
        |
@@ -64,38 +70,38 @@ Here’s a step-by-step visual representation of how a document is processed:
        |
        8. The React component's `result` state is updated with the JSON data.
        |
-       9. The UI re-renders to display the analysis in tabs/accordion.
+       9. The UI re-renders to display the extracted data for review and approval.
        |
        V
-[User's Device: Browser]
+[Finance User's Device: Browser]
        |
-       10. User sees the complete document analysis.
+       10. User sees the complete invoice analysis, ready for action.
        |
 ```
 
 ### 3. Key Features
 
-Titan is more than just an OCR tool; it's a comprehensive document intelligence platform.
+Titan is more than just an OCR tool; it's a comprehensive financial document intelligence platform.
 
--   **Multi-Modal Document Ingestion:** Users can upload PDFs and various image formats. Crucially, our integrated camera feature allows users to instantly digitize physical documents, crop them for clarity, and submit them for analysis on the go.
--   **AI-Powered Analysis:** We leverage a multimodal LLM to understand both text and layout. The AI generates a plain-English summary, extracts critical facts (like parties, dates, and amounts), identifies potential risks and fees, and creates a list of actionable to-do items with deadlines.
--   **Reliable, Structured Output:** Every analysis returns a predictable JSON object with citations for each extracted fact. This reliability is enforced by a Zod schema, making the data easy to integrate and display consistently.
--   **Adaptive & Responsive UI:** The interface provides a seamless experience across devices, using tabs on desktop and an accordion on mobile to present complex information clearly.
+-   **Multi-Modal Document Ingestion:** Process invoices, receipts, and expense reports from anywhere. Accept PDFs, images, or use the built-in camera for on-the-go receipt capture.
+-   **AI-Powered Data Extraction:** Go beyond OCR. Our AI understands financial documents, accurately extracting critical data like vendor names, invoice numbers, line items (quantity, description, price), tax amounts, and due dates.
+-   **Reliable, Structured Output:** Every analysis returns a predictable JSON object enforced by a Zod schema. This guarantees the data is clean, consistent, and ready for direct integration into accounting systems like QuickBooks or SAP.
+-   **Automated To-Do & Risk Flagging:** The AI automatically identifies payment deadlines and creates actionable to-do items. It can also be prompted to flag unusual items or potential discrepancies for human review.
 
 ### 4. Competitive Differentiation
 
-Our solution stands out from existing document management tools in several key ways:
+Our solution stands out from existing financial and document management tools:
 
--   **From Data Extraction to Actionable Intelligence:** While most tools stop at OCR (extracting raw text), we provide a second layer of AI analysis that interprets the text, contextualizes it, and tells the user what it means for them and what they need to do next.
--   **Integrated, End-to-End Workflow:** We offer a single, seamless experience from document capture to analysis and action items. There's no need to use a separate scanning app, then upload to a separate analysis tool. It all happens in one place.
--   **Cost-Effective & Serverless:** By using a serverless architecture (Genkit, Vercel/Netlify/Railway), we avoid the high fixed costs of maintaining dedicated servers. Our operational costs scale directly with usage, making the solution highly economical.
+-   **From Data Entry to Data Intelligence:** While most tools focus on digitizing text (OCR), we provide a second layer of AI analysis that interprets the document, extracts structured financial data, and tells you what to do with it. This drastically reduces manual data entry and the risk of human error.
+-   **Integrated, End-to-End Workflow:** We offer a single, seamless experience from document capture to data extraction and review. There's no need for separate scanning apps and manual entry into an accounting system. Titan handles the "first mile" of data processing.
+-   **Cost-Effective & Serverless:** By using a serverless architecture, we avoid the high fixed costs of dedicated servers. Our operational costs scale directly with the volume of documents processed, making it an incredibly lean and efficient model for businesses of any size.
 
 ### 5. Scalability & Implementation Cost
 
 The architecture was deliberately chosen to maximize scalability while minimizing cost.
 
--   **Scalability:** Every component of our stack is serverless and managed by best-in-class providers. The **Next.js frontend** scales automatically with traffic via the hosting platform, and **Genkit AI flows** are serverless functions that can handle a massive number of concurrent requests. This means we can go from one user to one million users with zero infrastructure changes.
--   **Implementation Cost:** The initial development cost is significantly reduced by leveraging open-source tools like Next.js, React, and Genkit. The primary ongoing cost is API usage for the AI model, which is a variable cost directly tied to user activity. There are no fixed server costs, making it an incredibly lean and efficient business model.
+-   **Scalability:** Every component of our stack is serverless. The **Next.js frontend** scales automatically with traffic, and **Genkit AI flows** can handle a massive number of concurrent document analyses without any infrastructure changes. This means the system can support a small business processing 100 invoices a month or an enterprise processing 100,000.
+-   **Implementation Cost:** The primary cost is not servers or software licenses, but variable API usage for the AI model. Costs are directly proportional to the number of documents analyzed. By leveraging open-source tools (Next.js, Genkit), the upfront development and maintenance costs are significantly lower than traditional enterprise software. This makes powerful AI accessible without a large initial investment.
 
 ### 6. Detailed File Structure
 
@@ -207,3 +213,5 @@ Once both servers are running, you can access the application in your web browse
 [http://localhost:9002](http://localhost:9002)
 
 You are now all set up for local development! Changes you make to the frontend code will be hot-reloaded by the Next.js server, and changes to your AI flows will be automatically picked up by the Genkit server.
+
+    
