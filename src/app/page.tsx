@@ -27,6 +27,7 @@ import {
   Check,
   Menu,
   BookOpen,
+  History,
 } from 'lucide-react';
 import Cropper from 'react-easy-crop';
 import type { Point, Area } from 'react-easy-crop';
@@ -699,6 +700,12 @@ export default function DocumentUploader() {
           <Button variant="link" className="text-foreground" asChild>
             <Link href="/">Home</Link>
           </Button>
+          <Button variant="link" className="text-muted-foreground" asChild>
+            <Link href="/history">
+              <History className="mr-2 h-4 w-4" />
+              History
+            </Link>
+          </Button>
           <Button variant="link" className="text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
               <BookOpen className="mr-2 h-4 w-4" />
               Documentation
@@ -726,6 +733,9 @@ export default function DocumentUploader() {
               </Link>
               <Link href="/" className="text-foreground">
                 Home
+              </Link>
+              <Link href="/history" className="text-muted-foreground">
+                History
               </Link>
               <button className="flex items-center text-muted-foreground" onClick={() => setIsDocsOpen(true)}>
                 Documentation
@@ -788,5 +798,3 @@ export default function DocumentUploader() {
     </div>
   );
 }
-
-    
