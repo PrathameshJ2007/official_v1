@@ -10,8 +10,6 @@ import {
   Loader2,
   History,
   FileText,
-  Zap,
-  BrainCircuit,
   ShieldCheck,
   CheckCircle2,
   FileClock,
@@ -113,7 +111,7 @@ interface ProcessingStep {
 const initialProcessingSteps: ProcessingStep[] = [
     { key: 'upload', icon: <CheckCircle2 className="h-6 w-6 text-green-500" />, title: 'Upload Complete', description: 'Your document has been uploaded.', status: 'pending' },
     { key: 'ocr', icon: <FileClock className="h-6 w-6 text-primary" />, title: 'Processing Document', description: 'Extracting text and detecting layout.', status: 'pending' },
-    { key: 'analysis', icon: <BrainCircuit className="h-6 w-6 text-primary" />, title: 'AI Analysis', description: 'Generating summaries and extracting key facts.', status: 'pending' },
+    { key: 'analysis', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-primary"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.21.38.44.73.7.1.06.2.1.4.15.68h5.3c.05-.1.1-.22.15-.34.25-.37.48-.72.69-1.09 3.97-1.33 6.84-5.08 6.84-9.5A10 10 0 0 0 12 2Z" /><path d="M10 12a2.5 2.5 0 0 1-2.5-2.5" /><path d="M10 7.5a2.5 2.5 0 0 1 5 0" /><path d="M14 12a2.5 2.5 0 0 1-2.5 2.5" /><path d="M14 16.5a2.5 2.5 0 0 1-5 0" /><path d="M12 7.5v1" /><path d="M7.5 10h1" /><path d="M16.5 10h-1" /><path d="M12 12v1" /><path d="M12 16.5v1" /><path d="m14.5 7-.87.5" /><path d="m9.5 7 .87.5" /><path d="m7.5 14.5.87.5" /><path d="m16.5 14.5-.87.5" /></svg>, title: 'AI Analysis', description: 'Generating summaries and extracting key facts.', status: 'pending' },
     { key: 'quality', icon: <CircleDot className="h-6 w-6 text-muted-foreground" />, title: 'Finalizing', description: 'Validating results and preparing your report.', status: 'pending' },
 ];
 
@@ -758,7 +756,7 @@ export default function DocumentUploader() {
           ) : (
             <div className="text-center">
               <div className="inline-block p-3 mb-4 bg-primary/10 rounded-lg">
-                 <BrainCircuit className="w-8 h-8 text-primary" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-primary"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.21.38.44.73.7.1.06.2.1.4.15.68h5.3c.05-.1.1-.22.15-.34.25-.37.48-.72.69-1.09 3.97-1.33 6.84-5.08 6.84-9.5A10 10 0 0 0 12 2Z" /><path d="M10 12a2.5 2.5 0 0 1-2.5-2.5" /><path d="M10 7.5a2.5 2.5 0 0 1 5 0" /><path d="M14 12a2.5 2.5 0 0 1-2.5 2.5" /><path d="M14 16.5a2.5 2.5 0 0 1-5 0" /><path d="M12 7.5v1" /><path d="M7.5 10h1" /><path d="M16.5 10h-1" /><path d="M12 12v1" /><path d="M12 16.5v1" /><path d="m14.5 7-.87.5" /><path d="m9.5 7 .87.5" /><path d="m7.5 14.5.87.5" /><path d="m16.5 14.5-.87.5" /></svg>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">
                 Titanium-Grade
@@ -782,17 +780,17 @@ export default function DocumentUploader() {
               </div>
               <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <FeatureCard 
-                    icon={<Zap className="text-blue-400" />}
+                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>}
                     title="Lightning Fast OCR"
                     description="Advanced OCR with auto-cleaning, deskewing, and multi-language support extracts text with exceptional accuracy."
                 />
                 <FeatureCard 
-                    icon={<BrainCircuit className="text-green-400" />}
+                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-400"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.21.38.44.73.7.1.06.2.1.4.15.68h5.3c.05-.1.1-.22.15-.34.25-.37.48-.72.69-1.09 3.97-1.33 6.84-5.08 6.84-9.5A10 10 0 0 0 12 2Z" /><path d="M10 12a2.5 2.5 0 0 1-2.5-2.5" /><path d="M10 7.5a2.5 2.5 0 0 1 5 0" /><path d="M14 12a2.5 2.5 0 0 1-2.5 2.5" /><path d="M14 16.5a2.5 2.5 0 0 1-5 0" /><path d="M12 7.5v1" /><path d="M7.5 10h1" /><path d="M16.5 10h-1" /><path d="M12 12v1" /><path d="M12 16.5v1" /><path d="m14.5 7-.87.5" /><path d="m9.5 7 .87.5" /><path d="m7.5 14.5.87.5" /><path d="m16.5 14.5-.87.5" /></svg>}
                     title="AI-Powered Analysis"
                     description="Our neural network understands document structure, extracts key facts, and identifies potential risks in plain English."
                 />
                 <FeatureCard 
-                    icon={<ShieldCheck className="text-purple-400" />}
+                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" /><path d="m9 12 2 2 4-4" /></svg>}
                     title="Secure & Private"
                     description="Your documents are processed securely with optional PII redaction and enterprise-grade data protection."
                 />
